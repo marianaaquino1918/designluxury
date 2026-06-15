@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sanitarios de Lujo | DESIGN LUXURY</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@300;400;500;700&display=swap');
+
+        :root {
+            /* General */
+            --transition-speed: 0.4s;
+            --border-radius: 18px;
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Roboto', sans-serif;
+
+            /* Paleta de Colores */
+            --bg-color: #faf9f7;
+            --primary-luxury: #a98d40; /* Dorado/Latón para acentos */
+            --primary-hover: #886f3f;
+            --text-dark: #2a2a2a;
+            --text-light: #faf9f7;
+            --card-bg: #fff;
+            --shadow-subtle: 0 4px 20px rgba(0,0,0,0.07);
+            --shadow-deep: 0 10px 40px rgba(0,0,0,0.15);
+            --overlay-bg: rgba(255, 255, 255, 0.95);
+            --product-p-color: #5f4b3b;
+        }
+
+        /* === NO TOCAR: BASE, HEADER Y MENÚ === */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--font-sans); background-color: var(--bg-color); color: var(--text-dark); scroll-behavior: smooth; min-height: 100vh; line-height: 1.6; }
+        header { position: sticky; top: 0; width: 100%; background: var(--overlay-bg); backdrop-filter: blur(10px); box-shadow: var(--shadow-subtle); z-index: 1000; padding: 1rem 4%; display: flex; align-items: center; justify-content: space-between; }
+        header h1 { font-family: var(--font-serif); font-weight: 700; font-size: 2rem; color: var(--primary-hover); letter-spacing: 3px; cursor: pointer; }
+        .main-nav ul { list-style: none; display: flex; gap: 2rem; align-items: center; }
+        .main-nav ul li a { text-decoration: none; color: var(--text-dark); font-weight: 500; font-size: 1.05rem; padding: 0.5rem 0; position: relative; transition: color var(--transition-speed); }
+        .main-nav ul li a::after { content: ''; position: absolute; left: 50%; transform: translateX(-50%); bottom: -5px; width: 0; height: 2px; background: var(--primary-luxury); transition: width var(--transition-speed); }
+        .main-nav ul li a:hover, .main-nav ul li a:focus { color: var(--primary-luxury); outline: none; }
+        .main-nav ul li a:hover::after, .main-nav ul li a.active::after { width: 100%; }
+        .main-nav ul li a.active { color: var(--primary-luxury); font-weight: 700; }
+        .menu-toggle { display: none; cursor: pointer; font-size: 1.5rem; color: var(--primary-luxury); padding: 0.5rem; z-index: 1001; border: none; background: none; transition: transform 0.3s; }
+        .off-canvas-menu { position: fixed; top: 0; right: 0; width: 300px; max-width: 80%; height: 100%; background: var(--overlay-bg); backdrop-filter: blur(15px); box-shadow: -10px 0 30px rgba(0,0,0,0.3); z-index: 999; transform: translateX(100%); transition: transform 0.5s ease-in-out; padding: 5rem 1rem 2rem 1rem; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
+        .off-canvas-menu.open { transform: translateX(0); }
+        .off-canvas-menu ul { list-style: none; width: 100%; text-align: center; padding: 0; display: flex; flex-direction: column; gap: 1.2rem; }
+        .off-canvas-menu ul li a { text-decoration: none; font-family: var(--font-serif); font-size: 1.4rem; font-weight: 700; color: var(--text-dark); display: block; padding: 0.8rem 0; transition: color 0.3s, background 0.3s, transform 0.3s, box-shadow 0.3s; position: relative; }
+        .off-canvas-menu ul li a:hover, .off-canvas-menu ul li a.active { color: var(--primary-luxury); background: rgba(169,141,64,0.1); transform: translateY(-3px); box-shadow: 0 5px 15px rgba(169,141,64,0.3); text-shadow: 0 0 8px rgba(169,141,64,0.6); }
+        .off-canvas-menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 998; opacity: 0; pointer-events: none; transition: opacity 0.5s; }
+        .off-canvas-menu-overlay.visible { opacity: 1; pointer-events: auto; }
+
+        /* === NUEVO DISEÑO DEL CUERPO DE LA PÁGINA === */
+
+        /* --- HERO SECTION --- */
+        .hero { height: 90vh; position: relative; display: flex; justify-content: center; align-items: center; text-align: center; color: var(--text-light); overflow: hidden; background-color: #000; }
+        #hero-video { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); min-width: 100%; min-height: 100%; width: auto; height: auto; z-index: 0; object-fit: cover; }
+        .hero::before { content: ""; position: absolute; inset: 0; background: rgba(30,30,30,0.5); z-index: 1; }
+        .hero::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 100%; height: 150px; background: linear-gradient(to bottom, transparent, var(--bg-color)); z-index: 1; }
+        .hero h2 { position: relative; font-family: var(--font-serif); font-size: clamp(2.5rem, 6vw, 4.5rem); max-width: 900px; z-index: 2; text-shadow: 0 5px 20px rgba(0,0,0,0.6); letter-spacing: 2px; }
+
+      
+    
+
+       
+        /* --- CTA BANNER SECTION --- */
+        .cta-banner { padding: 8rem 4%; margin: 4rem 0 0 0; background-image: linear-gradient(rgba(40,30,20,0.8), rgba(40,30,20,0.8)), url('SAN41.jpeg'); background-size: cover; background-position: center; background-attachment: fixed; text-align: center; color: var(--text-light); }
+        .cta-banner h3 { font-family: var(--font-serif); font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 1.5rem; text-shadow: 0 3px 10px rgba(0,0,0,0.5); }
+        .cta-banner p { max-width: 600px; margin: 0 auto 2.5rem auto; font-size: 1.1rem; opacity: 0.9; }
+
+        /* --- NO TOCAR: FOOTER --- */
+        footer { background: var(--primary-hover); color: var(--text-light); text-align: center; padding: 2rem 1rem; font-size: 0.95rem; user-select: none; }
+        footer small { opacity: 0.8; user-select: none; }
+        footer .socials { margin-top: 1rem; display: flex; justify-content: center; gap: 1.5rem; font-size: 1.4rem; user-select: none; }
+        footer .socials a { color: var(--text-light); text-decoration: none; transition: color var(--transition-speed), transform 0.3s; }
+        footer .socials a:hover, footer .socials a:focus { color: var(--primary-luxury); transform: scale(1.1); outline: none; }
+   :root {
+    --bg: #f6f1eb;
+    --card: #fffaf5;
+    --text: #5a3f24;
+    --subtext: #7a6a58;
+    --accent: #8a673f;
+    --gold: #c8a46a;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #14100c;
+        --card: #1f1a15;
+        --text: #e8d9c5;
+        --subtext: #bfae97;
+    }
+}
+
+.luxury-catalog {
+    padding: 90px 6%;
+    background: var(--bg);
+    text-align: center;
+}
+
+.luxury-title {
+    font-size: 2.6rem;
+    color: var(--text);
+    margin-bottom: 10px;
+}
+
+.luxury-subtitle {
+    color: var(--subtext);
+    margin-bottom: 60px;
+}
+
+.luxury-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 45px;
+}
+
+.luxury-card {
+    background: var(--card);
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 20px 45px rgba(0,0,0,0.25);
+    transition: all 0.4s ease;
+}
+
+.luxury-card:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 25px 70px rgba(200,164,106,0.4);
+}
+
+.luxury-card img {
+    width: 100%;
+    padding: 50px;
+    background: radial-gradient(circle, #e0c6a2, transparent);
+}
+
+.luxury-info {
+    padding: 30px;
+}
+
+.luxury-info h3 {
+    font-size: 1.4rem;
+    color: var(--text);
+}
+
+.luxury-info span {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--gold);
+    margin-bottom: 12px;
+}
+
+.luxury-info p {
+    font-size: 0.95rem;
+    color: var(--subtext);
+    margin-bottom: 22px;
+}
+
+.luxury-info a {
+    display: inline-block;
+    padding: 12px 30px;
+    border-radius: 40px;
+    background: linear-gradient(135deg, var(--accent), var(--gold));
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: opacity 0.3s ease;
+}
+
+.luxury-info a:hover {
+    opacity: 0.85;
+}
+  
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: 0.8s ease;
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* === IMÁGENES DOBLES PRODUCTO === */
+.luxury-image-box {
+    padding: 45px;
+    background: radial-gradient(circle, #e0c6a2, transparent);
+    text-align: center;
+}
+
+.main-image {
+    width: 100%;
+    max-width: 260px;
+    transition: transform 0.4s ease;
+}
+
+.luxury-card:hover .main-image {
+    transform: scale(1.08);
+}
+
+.thumbnail-row {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.thumb {
+    width: 55px;
+    height: 55px;
+    object-fit: contain;
+    border-radius: 10px;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    background: #fff;
+}
+
+.thumb:hover,
+.thumb.active {
+    opacity: 1;
+    transform: scale(1.1);
+    border-color: #c8a46a;
+}
+/* === MENÚ HAMBURGUESA RESPONSIVE === */
+@media (max-width: 1024px) {
+    .main-nav {
+        display: none;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+}
+  
+
+  /* =======================
+   CATÁLOGO DE PRODUCTOS
+======================= */
+
+.catalog-header {
+    text-align: center;
+    margin-bottom: 70px;
+}
+
+.catalog-header h2 {
+    font-family: var(--font-serif);
+    font-size: 2.8rem;
+    color: var(--text);
+}
+
+.catalog-header p {
+    color: var(--subtext);
+    margin-top: 10px;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 50px;
+}
+
+/* TARJETA */
+.product-card {
+    background: var(--card);
+    border-radius: 26px;
+    overflow: hidden;
+    box-shadow: 0 18px 45px rgba(0,0,0,.25);
+    transition: transform .4s ease, box-shadow .4s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-14px);
+    box-shadow: 0 30px 70px rgba(200,164,106,.45);
+}
+
+/* IMÁGENES */
+.product-media {
+    padding: 50px;
+    background: radial-gradient(circle, #e0c6a2, transparent);
+    text-align: center;
+}
+
+.product-image {
+    max-width: 260px;
+    transition: transform .4s ease;
+}
+
+.product-card:hover .product-image {
+    transform: scale(1.1);
+}
+
+/* MINIATURAS */
+.product-thumbs {
+    margin-top: 22px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.thumb {
+    width: 55px;
+    height: 55px;
+    border-radius: 12px;
+    background: #fff;
+    opacity: .6;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: .3s;
+}
+
+.thumb:hover,
+.thumb.active {
+    opacity: 1;
+    transform: scale(1.1);
+    border-color: var(--gold);
+}
+
+/* INFO */
+.product-info {
+    padding: 34px;
+    text-align: center;
+}
+
+.product-info h3 {
+    font-size: 1.35rem;
+    color: var(--text);
+}
+
+.brand {
+    display: block;
+    color: var(--gold);
+    margin: 8px 0;
+    font-weight: 500;
+}
+
+.sku {
+    font-size: .95rem;
+    color: var(--subtext);
+    margin-bottom: 22px;
+}
+
+/* BOTÓN */
+.product-btn {
+    display: inline-block;
+    padding: 14px 34px;
+    border-radius: 50px;
+    background: linear-gradient(135deg, var(--accent), var(--gold));
+    color: #fff;
+    text-decoration: none;
+    font-size: .9rem;
+    transition: opacity .3s ease;
+}
+
+.product-btn:hover {
+    opacity: .85;
+}
+
+/* =======================
+   CATÁLOGO DE PRODUCTOS
+======================= */
+.luxury-catalog {
+    padding: 80px 5%;
+    background: linear-gradient(135deg, #f8f4ef 0%, #ede8e0 100%);
+}
+
+.catalog-header {
+    text-align: center;
+    margin-bottom: 70px;
+}
+
+.catalog-header h2 {
+    font-family: var(--font-serif);
+    font-size: 2.8rem;
+    color: var(--text-dark);
+    position: relative;
+    display: inline-block;
+    padding-bottom: 18px;
+}
+
+.catalog-header h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 2px;
+    background: var(--primary-luxury);
+}
+
+.catalog-header p {
+    color: #8a7a6a;
+    margin-top: 16px;
+    font-size: 1rem;
+    letter-spacing: 1px;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* TARJETA */
+.product-card {
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 25px 60px rgba(169,141,64,0.2);
+}
+
+/* IMAGEN */
+.product-media {
+    position: relative;
+    background: linear-gradient(145deg, #f5ede0, #ede0cc);
+    padding: 40px 40px 20px;
+    text-align: center;
+    overflow: hidden;
+}
+
+.product-media::before {
+    content: '';
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: rgba(169,141,64,0.08);
+}
+
+.product-image {
+    width: 100%;
+    max-width: 220px;
+    height: 200px;
+    object-fit: contain;
+    transition: transform 0.5s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.product-card:hover .product-image {
+    transform: scale(1.07);
+}
+
+/* MINIATURAS */
+.product-thumbs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 16px;
+    padding-bottom: 10px;
+}
+
+.thumb {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    object-fit: contain;
+    background: #fff;
+    opacity: 0.55;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    padding: 4px;
+}
+
+.thumb:hover,
+.thumb.active {
+    opacity: 1;
+    border-color: var(--primary-luxury);
+    transform: scale(1.1);
+}
+
+/* INFO */
+.product-info {
+    padding: 28px 30px 32px;
+    text-align: center;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-top: 1px solid #f0ebe3;
+}
+
+.product-info h3 {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    color: #2a2a2a;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.brand {
+    display: inline-block;
+    color: #fff;
+    background: linear-gradient(135deg, var(--primary-hover), var(--primary-luxury));
+    font-size: 0.72rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.sku {
+    font-size: 0.82rem;
+    color: #aaa;
+    margin-bottom: 22px;
+    letter-spacing: 0.5px;
+}
+
+/* BOTÓN */
+.product-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 13px 30px;
+    border-radius: 50px;
+    background: linear-gradient(135deg, var(--primary-hover), var(--primary-luxury));
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    font-weight: 500;
+    transition: opacity 0.3s, transform 0.3s;
+    margin-top: auto;
+}
+
+.product-btn::before {
+    content: '\f232';
+    font-family: 'Font Awesome 6 Brands';
+    font-size: 1rem;
+}
+
+.product-btn:hover {
+    opacity: 0.88;
+    transform: scale(1.03);
+}
+
+/* REVEAL */
+.reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: 0.8s ease;
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .luxury-catalog { padding: 60px 4%; }
+    .catalog-header h2 { font-size: 2rem; }
+    .products-grid { grid-template-columns: 1fr; gap: 30px; }
+    .product-image { max-width: 180px; height: 170px; }
+}
+
+@media (max-width: 480px) {
+    .product-info { padding: 22px 20px 26px; }
+    .product-info h3 { font-size: 1rem; }
+    .product-btn { padding: 11px 24px; font-size: 0.8rem; }
+}
+    </style>
+</head>
+<body>
+    <header>
+        <h1>DESIGN LUXURY</h1>
+        <nav aria-label="Menú principal" class="main-nav">
+            <ul>
+                <li><a href="Index.html">Inicio</a></li>
+                <li><a href="Sinteticos.html">Sintético</a></li>
+                <li><a href="Piedrass.html">Piedra</a></li>
+                <li><a href="Agua.html" class="active" aria-current="page">Agua</a></li>
+                <li><a href="Pisoss.html">Pisos Gran Formato</a></li>
+                <li><a href="Adhesivos.html">Adhesivos</a></li>
+                <li><a href="mesas.html">Mesas</a></li>
+                <li><a href="servicios.html">Servicios</a></li>
+            </ul>
+        </nav>
+        <button class="menu-toggle" aria-expanded="false" aria-controls="off-canvas-menu">
+            <i class="fas fa-bars"></i>
+        </button>
+    </header>
+
+    <div id="off-canvas-menu" class="off-canvas-menu">
+        <ul>
+            <li><a href="Index.html">Inicio</a></li>
+            <li><a href="Sinteticos.html">Sintético</a></li>
+            <li><a href="Piedrass.html">Piedra</a></li>
+            <li><a href="Agua.html" class="active" aria-current="page">Agua</a></li>
+            <li><a href="Pisoss.html">Pisos Gran Formato</a></li>
+            <li><a href="Adhesivos.html">Adhesivos</a></li>
+            <li><a href="mesas.html">Mesas</a></li>
+            <li><a href="servicios.html">Servicios</a></li>
+        </ul>
+    </div>
+    <div class="off-canvas-menu-overlay"></div>
+
+    <main>
+        <section class="hero" role="banner">
+            <video autoplay loop muted playsinline id="hero-video">
+    <source src="TOTO.mp4" type="video/mp4">
+   
+</video>
+            <h2>AGUA</h2>
+        </section>
+<section class="luxury-catalog">
+    <header class="catalog-header">
+        <h2>Catálogo</h2>
+        <p>Diseño, elegancia y tecnología aplicada al confort.</p>
+    </header>
+
+    <div class="products-grid">
+
+        <article class="product-card reveal">
+            <div class="product-media">
+                <img src="G5A1.jfif" alt="Sanitario inteligente G5A" class="product-image">
+                <div class="product-thumbs">
+                    <img src="G5A1.jfif" class="thumb active" alt="Vista frontal">
+                    <img src="G5A2.jfif" class="thumb" alt="Vista lateral">
+                </div>
+            </div>
+            <div class="product-info">
+                <h3>Sanitario Inteligente G5A</h3>
+                <span class="brand">TOTO</span>
+                <p class="sku">MS7631CEMFG-01 · 4.8 LTS</p>
+                <a class="product-btn"
+                   href="https://wa.me/8124203903?text=Hola,%20quiero%20más%20información"
+                   target="_blank">
+                    Solicitar información
+                </a>
+            </div>
+        </article>
+
+        <article class="product-card reveal">
+            <div class="product-media">
+                <img src="SAN2.jfif" alt="Neorest LS" class="product-image">
+                <div class="product-thumbs">
+                    <img src="SAN6.jpeg" class="thumb active">
+                    <img src="SAN66.jpeg" class="thumb">
+                </div>
+            </div>
+            <div class="product-info">
+                <h3>SANITARIO INTELIGENTE NEOREST LS BLANCO SATINADO</h3>
+                <span class="brand">TOTO</span>
+                <p class="sku">MS8732CUMFG01S · 4.8 LTS</p>
+                <a class="product-btn" href="https://wa.me/8124203903" target="_blank">
+                    Solicitar información
+                </a>
+            </div>
+        </article>
+
+        <article class="product-card reveal">
+            <div class="product-media">
+                <img src="SAN3.jpeg" alt="Sanitario Funzionale" class="product-image">
+                <div class="product-thumbs">
+                    <img src="SAN3.jpeg" class="thumb active">
+                    <img src="SAN31.jpeg" class="thumb">
+                </div>
+            </div>
+            <div class="product-info">
+                <h3>Sanitario Una Pieza Funzionale 4.2L</h3>
+                <span class="brand">AMBIANCE</span>
+                <p class="sku">8522-02-1</p>
+                <a class="product-btn" href="https://wa.me/8124203903" target="_blank">
+                    Solicitar información
+                </a>
+            </div>
+        </article>
+
+        <article class="product-card reveal">
+            <div class="product-media">
+                <img src="SAN4.jpeg" alt="Sanitario I-Comfort" class="product-image">
+                <div class="product-thumbs">
+                    <img src="SAN4.jpeg" class="thumb active">
+                    <img src="SAN41.jpeg" class="thumb">
+                </div>
+            </div>
+            <div class="product-info">
+                <h3>Sanitario I-Comfort Line c/Asiento Eléc.</h3>
+                <span class="brand">NOKEN</span>
+                <p class="sku">100327719</p>
+                <a class="product-btn" href="https://wa.me/8124203903" target="_blank">
+                    Solicitar información
+                </a>
+            </div>
+        </article>
+
+    </div>
+</section>
+
+        
+        <section class="cta-banner">
+            <h3>Cree el Baño de Sus Sueños</h3>
+            <p>Nuestro equipo de diseñadores está listo para ayudarle a seleccionar las piezas perfectas que reflejen su estilo único. Contáctenos para una consulta personalizada.</p>
+            
+        </section>
+
+    </main>
+    <footer>
+        <small>© 2025 DESIGN LUXURY. Todos los derechos reservados.</small>
+        <div class="socials" aria-label="Redes sociales">
+            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+        </div>
+    </footer>
+
+    <script>
+        // --- Lógica del Menú Hamburguesa ---
+        const menuToggle = document.querySelector('.menu-toggle');
+        const offCanvasMenu = document.getElementById('off-canvas-menu');
+        const menuOverlay = document.querySelector('.off-canvas-menu-overlay');
+
+        function toggleMenu() {
+            const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+            menuToggle.setAttribute('aria-expanded', !isExpanded);
+            offCanvasMenu.classList.toggle('open');
+            menuOverlay.classList.toggle('visible');
+            document.body.style.overflow = offCanvasMenu.classList.contains('open') ? 'hidden' : 'auto';
+        }
+
+        menuToggle.addEventListener('click', toggleMenu);
+        menuOverlay.addEventListener('click', toggleMenu);
+        
+        offCanvasMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (offCanvasMenu.classList.contains('open')) {
+                    toggleMenu();
+                }
+            });
+        });
+    </script>
+    <script>
+const reveals = document.querySelectorAll(".reveal");
+
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add("active");
+        }
+    });
+});
+
+reveals.forEach(el => observer.observe(el));
+</script>
+
+</body>
+<script>
+document.querySelectorAll('.product-card').forEach(card => {
+    const mainImage = card.querySelector('.product-image');
+    const thumbs = card.querySelectorAll('.thumb');
+
+    thumbs.forEach(thumb => {
+        thumb.addEventListener('click', () => {
+            thumbs.forEach(t => t.classList.remove('active'));
+            thumb.classList.add('active');
+            mainImage.src = thumb.src;
+        });
+    });
+});
+</script>
+
+</script>
+
+</html>

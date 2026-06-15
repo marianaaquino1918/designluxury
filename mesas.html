@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mesas | Design Luxury</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
+
+        :root {
+            /* Paleta de Colores Lujo (del archivo que te gusta) */
+            --bg-color-main: #F5F5DC;      /* Beige elegante para el fondo del slider */
+            --primary-luxury: #a98d40;    /* Dorado/Latón para acentos */
+            --primary-hover: #886f3f;     /* Dorado oscuro para hover */
+            --text-dark: #2a2a2a;          /* Texto oscuro principal */
+            --text-light: #faf9f7;        /* Texto claro para overlays y header */
+            --card-bg: #fff;              /* Fondo blanco del menú */
+            --overlay-bg: rgba(255, 255, 255, 0.95); /* Fondo translúcido del menú */
+            --shadow-subtle: 0 4px 20px rgba(0,0,0,0.07);
+            
+            /* Fuentes */
+            --font-sans: 'Poppins', sans-serif;
+            --font-serif: 'Playfair Display', serif;
+            
+            /* Transiciones */
+            --transition-speed: 0.4s;
+        }
+
+        /* --- ESTILOS GLOBALES Y RESET --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-color-main);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden; 
+        }
+
+        /* --- HEADER Y MENÚ (ESTILO EXACTO SOLICITADO) --- */
+        header {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            background: var(--overlay-bg);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-subtle);
+            z-index: 1000;
+            padding: 1rem 4%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        header .logo {
+            font-family: var(--font-serif);
+            font-weight: 700;
+            font-size: 2rem;
+            color: var(--primary-hover);
+            letter-spacing: 3px;
+            cursor: pointer;
+        }
+
+        /* Menú de escritorio */
+        .main-nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .main-nav ul li a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            font-size: 1.05rem;
+            padding: 0.5rem 0;
+            position: relative;
+            transition: color var(--transition-speed);
+        }
+
+        .main-nav ul li a::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: -5px;
+            width: 0;
+            height: 2px;
+            background: var(--primary-luxury);
+            transition: width var(--transition-speed);
+        }
+
+        .main-nav ul li a:hover,
+        .main-nav ul li a:focus {
+            color: var(--primary-luxury);
+            outline: none;
+        }
+
+        .main-nav ul li a:hover::after,
+        .main-nav ul li a.active::after {
+            width: 100%;
+        }
+
+        .main-nav ul li a.active {
+            color: var(--primary-luxury);
+            font-weight: 700;
+        }
+
+        /* Botón hamburguesa (móvil) */
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--primary-luxury);
+            padding: 0.5rem;
+            z-index: 1001;
+            border: none;
+            background: none;
+        }
+
+        /* Menú lateral (Off-Canvas) */
+        .off-canvas-menu {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 300px;
+            max-width: 80%;
+            height: 100%;
+            background: var(--overlay-bg);
+            backdrop-filter: blur(15px);
+            box-shadow: -10px 0 30px rgba(0,0,0,0.3);
+            z-index: 999;
+            transform: translateX(100%);
+            transition: transform 0.5s ease-in-out;
+            padding-top: 5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .off-canvas-menu.open {
+            transform: translateX(0);
+        }
+
+        .off-canvas-menu ul {
+            list-style: none;
+            width: 100%;
+            text-align: center;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .off-canvas-menu ul li a {
+            text-decoration: none;
+            font-family: var(--font-serif);
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            display: block;
+            padding: 0.8rem 0;
+            transition: color 0.3s, background 0.3s, transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+
+        .off-canvas-menu ul li a:hover,
+        .off-canvas-menu ul li a.active {
+            color: var(--primary-luxury);
+            background: rgba(169,141,64,0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(169,141,64,0.3);
+            text-shadow: 0 0 8px rgba(169,141,64,0.6);
+        }
+
+        .off-canvas-menu-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 998;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s;
+        }
+
+        .off-canvas-menu-overlay.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* --- ESTILOS DEL SLIDER (CON MEJORAS) --- */
+        .slider {
+            /* MEJORA: Altura ajustada para no quedar debajo del header sticky */
+            height: calc(100vh - 74px); 
+            position: relative;
+        }
+
+        .slider .list .item {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .slider .list .item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .slider .list .item::after {
+            content: '';
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            background-image: linear-gradient(to top, rgba(0, 0, 0, 0.7) 30%, transparent);
+        }
+
+  .slider .list .item .content {
+    position: absolute;
+    left: 10%;
+    top: 28%;
+    transform: translateY(-50%);
+    width: 500px;
+    max-width: 80%;
+    z-index: 1;
+    color: var(--text-light);
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
+}
+
+        .slider .list .item .content p:nth-child(1) {
+            text-transform: uppercase;
+            letter-spacing: 10px;
+        }
+
+        .slider .list .item .content h2 {
+            font-size: clamp(50px, 10vw, 100px);
+            margin: 0;
+        }
+
+        /* Animaciones del slider */
+        .slider .list .item.active {
+            opacity: 1;
+            z-index: 10;
+        }
+
+        @keyframes showContent {
+            to {
+                transform: translateY(0);
+                filter: blur(0);
+                opacity: 1;
+            }
+        }
+
+        .slider .list .item.active p:nth-child(1),
+        .slider .list .item.active h2,
+        .slider .list .item.active p:nth-child(3) {
+            transform: translateY(30px);
+            filter: blur(20px);
+            opacity: 0;
+            animation: showContent 0.5s 0.7s ease-in-out forwards;
+        }
+        .slider .list .item.active h2 { animation-delay: 1s; }
+        .slider .list .item.active p:nth-child(3) { animation-duration: 1.3s; }
+
+        /* Flechas de control */
+        .arrows {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            right: 50px;
+            z-index: 100;
+        }
+
+        .arrows button {
+            background-color: var(--primary-hover);
+            color: var(--text-light);
+            border: none;
+            font-family: monospace;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: large;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .arrows button:hover {
+            background-color: var(--primary-luxury);
+            transform: scale(1.1);
+        }
+
+        /* Miniaturas (Thumbnails) */
+        .thumbnail {
+            position: absolute;
+            bottom: 50px;
+            z-index: 11;
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            height: 220px;
+            padding: 0 50px;
+            overflow-x: auto;
+            justify-content: center;
+        }
+        .thumbnail::-webkit-scrollbar { height: 5px; }
+        .thumbnail::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 10px; }
+        
+        .thumbnail .item {
+            width: 150px;
+            height: 220px;
+            filter: brightness(0.8);
+            transition: .5s;
+            flex-shrink: 0;
+            cursor: pointer;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .thumbnail .item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .thumbnail .item.active {
+            filter: brightness(1);
+            border: 3px solid var(--text-light);
+        }
+        .thumbnail .item .content {
+            position: absolute;
+            inset: auto 10px 10px 10px;
+            color: var(--text-light);
+            text-shadow: 1px 1px 3px #000;
+        }
+
+        /* --- MEDIA QUERIES PARA RESPONSIVIDAD GENERAL --- */
+
+        /* Tablets y dispositivos medianos */
+        @media screen and (max-width: 992px) {
+            .main-nav { display: none; }
+            .menu-toggle { display: block; }
+            header .logo { font-size: 1.8rem; }
+            .slider .list .item .content { left: 5%; max-width: 90%; }
+            .arrows { right: 20px; }
+            .thumbnail { padding: 0 20px; justify-content: flex-start; }
+        }
+        
+        /* Móviles */
+        @media screen and (max-width: 768px) {
+            .slider { height: calc(100vh - 66px); }
+            header .logo { font-size: 1.5rem; }
+            
+            /* MEJORA: Centrar contenido del slider en móviles */
+            .slider .list .item .content {
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                width: 90%;
+                text-align: center;
+            }
+            .slider .list .item .content p:nth-child(1) { letter-spacing: 5px; }
+
+            /* MEJORA: Reubicar flechas en móviles */
+            .arrows {
+                top: auto;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 100px;
+                display: flex;
+                justify-content: space-between;
+            }
+            .thumbnail {
+                bottom: 80px; /* Sube para dar espacio a las nuevas flechas */
+                height: 150px;
+            }
+            .thumbnail .item {
+                width: 100px;
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">Design Luxury</div>
+        
+        <nav class="main-nav" aria-label="Menú principal">
+            <ul>
+                <li><a href="Index.html">Inicio</a></li>
+                <li><a href="Sinteticos.html">Sintético</a></li>
+                <li><a href="Piedrass.html">Piedra</a></li>
+                <li><a href="Aguaa.html">Agua</a></li>
+                <li><a href="Pisoss.html">Pisos</a></li>
+                <li><a href="Adhesivos.html">Adhesivos</a></li>
+                <li><a href="mesas.html" class="active" aria-current="page">Mesas</a></li>
+                <li><a href="servicios.html">Servicios</a></li>
+            </ul>
+        </nav>
+
+        <button class="menu-toggle" aria-expanded="false" aria-controls="off-canvas-menu">
+            <i class="fas fa-bars"></i>
+        </button>
+    </header>
+
+    <div id="off-canvas-menu" class="off-canvas-menu">
+        <ul>
+            <li><a href="Index.html">Inicio</a></li>
+            <li><a href="Sinteticos.html">Sintético</a></li>
+            <li><a href="Piedrass.html">Piedra</a></li>
+            <li><a href="Aguaa.html">Agua</a></li>
+            <li><a href="Pisoss.html">Pisos</a></li>
+            <li><a href="Adhesivos.html">Adhesivos</a></li>
+            <li><a href="mesas.html" class="active" aria-current="page">Mesas</a></li>
+            <li><a href="servicios.html">Servicios</a></li>
+        </ul>
+    </div>
+    <div class="off-canvas-menu-overlay"></div>
+
+    <div class="slider">
+        <div class="list">
+            <div class="item active">
+                <img src="mesa1.jfif">
+                <div class="content">
+                    <p>Diseño Italiano</p>
+                    <h2>Mármol Calacatta</h2>
+                    <p>Vista general del espacio con una mesa protagonista.</p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="mesa2.jfif">
+                <div class="content">
+                    <p>Estilo Rústico</p>
+                    <h2>Madera de Roble</h2>
+                    <p>Diseño cálido con base de inspiración natural.</p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="mesa3.jfif">
+                <div class="content">
+                    <p>Toque Moderno</p>
+                    <h2>Cristal y Acero</h2>
+                    <p>Superficie clara y elegante, de estilo limpio.</p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="mesa4.jfif">
+                <div class="content">
+                    <p>Lujo Exótico</p>
+                    <h2>Piedra Ónix</h2>
+                    <p>Acabado oscuro con presencia sofisticada.</p>
+                </div>
+            </div>
+             <div class="item">
+                <img src="mesa5.jfif">
+                <div class="content">
+                    <p>DISEÑO CONTEMPORÁNEO</p>
+                    <h2>Nébula</h2>
+                    <p>Piedra con vetas suaves y aspecto artístico.</p>
+                </div>
+            </div>
+             <div class="item">
+                <img src="mesa6.jfif">
+                <div class="content">
+                    <p>ESTILO ATEMPORAL</p>
+                    <h2>Fusión</h2>
+                    <p>Mezcla moderna de materiales y contrastes.</p>
+                </div>
+            </div> <div class="item">
+                <img src="mesa7.jfif">
+                <div class="content">
+                    <p>CARÁCTER MODERNO</p>
+                    <h2>Dorado</h2>
+                    <p>Detalles refinados con un toque de lujo.</p>
+                </div>
+            </div> <div class="item">
+                <img src="mesa8.jfif">
+                <div class="content">
+                    <p>ARTE EN PIEDRA</p>
+                    <h2>Esencia</h2>
+                    <p>Diseño sobrio que resalta la forma de la mesa.</p>
+                </div>
+            </div> <div class="item">
+                <img src="mesa9.jfif">
+                <div class="content">
+                    <p>DISTINCIÓN ABSOLUTA</p>
+                    <h2>Brillo</h2>
+                    <p>Superficie pulida que aporta luz y distinción.</p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="arrows">
+            <button id="prev"><</button>
+            <button id="next">></button>
+        </div>
+
+        <div class="thumbnail">
+            <div class="item active">
+                <img src="mesa1.jfif">
+                <div class="content">Mármol</div>
+            </div>
+            <div class="item">
+                <img src="mesa2.jfif">
+                <div class="content">Roble</div>
+            </div>
+            <div class="item">
+                <img src="mesa3.jfif">
+                <div class="content">Cristal</div>
+            </div>
+            <div class="item">
+                <img src="mesa4.jfif">
+                <div class="content">Lujo Exótico</div>
+            </div>
+            <div class="item">
+                <img src="mesa5.jfif">
+                <div class="content">DISEÑO CONTEMPORÁNEO</div>
+            </div><div class="item">
+                <img src="mesa6.jfif">
+                <div class="content">ESTILO ATEMPORAL</div>
+            </div><div class="item">
+                <img src="mesa7.jfif">
+                <div class="content">CARÁCTER MODERNO</div>
+            </div><div class="item">
+                <img src="mesa8.jfif">
+                <div class="content">ARTE EN PIEDRA</div>
+            </div><div class="item">
+                <img src="mesa9.jfif">
+                <div class="content">DISTINCIÓN ABSOLUTA</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Lógica del Slider ---
+        const sliderItems = document.querySelectorAll('.slider .list .item');
+        const nextBtn = document.getElementById('next');
+        const prevBtn = document.getElementById('prev');
+        const thumbnails = document.querySelectorAll('.thumbnail .item');
+
+        let totalItems = sliderItems.length;
+        let activeItemIndex = 0;
+        let autoPlayInterval;
+
+        function showSlider() {
+            // Quita la clase 'active' del elemento anterior
+            document.querySelector('.slider .list .item.active').classList.remove('active');
+            document.querySelector('.thumbnail .item.active').classList.remove('active');
+
+            // Añade la clase 'active' al nuevo elemento
+            sliderItems[activeItemIndex].classList.add('active');
+            thumbnails[activeItemIndex].classList.add('active');
+            
+            // Auto-scroll de las miniaturas
+            thumbnails[activeItemIndex].scrollIntoView({
+                behavior: 'smooth',
+                inline: 'center',
+                block: 'nearest'
+            });
+
+            // Reinicia el autoplay
+            clearInterval(autoPlayInterval);
+            autoPlayInterval = setInterval(() => nextBtn.click(), 7000);
+        }
+
+        nextBtn.onclick = () => {
+            activeItemIndex = (activeItemIndex + 1) % totalItems;
+            showSlider();
+        };
+
+        prevBtn.onclick = () => {
+            activeItemIndex = (activeItemIndex - 1 + totalItems) % totalItems;
+            showSlider();
+        };
+
+        thumbnails.forEach((thumbnail, index) => {
+            thumbnail.addEventListener('click', () => {
+                activeItemIndex = index;
+                showSlider();
+            });
+        });
+
+        // Inicia el autoplay
+        autoPlayInterval = setInterval(() => nextBtn.click(), 7000);
+
+        // --- Lógica del Menú Hamburguesa ---
+        const menuToggle = document.querySelector('.menu-toggle');
+        const offCanvasMenu = document.getElementById('off-canvas-menu');
+        const menuOverlay = document.querySelector('.off-canvas-menu-overlay');
+        const body = document.body;
+
+        function toggleMenu() {
+            const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+            menuToggle.setAttribute('aria-expanded', String(!isExpanded));
+            offCanvasMenu.classList.toggle('open');
+            menuOverlay.classList.toggle('visible');
+            body.style.overflow = offCanvasMenu.classList.contains('open') ? 'hidden' : 'auto';
+        }
+
+        menuToggle.addEventListener('click', toggleMenu);
+        menuOverlay.addEventListener('click', toggleMenu);
+    </script>
+    <!-- WhatsApp flotante -->
+<a href="https://wa.me/528124203903" target="_blank" aria-label="Contactar por WhatsApp" style="
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 60px;
+    height: 60px;
+    background: #25D366;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+    z-index: 9999;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+" onmouseover="this.style.transform='scale(1.1)';this.style.boxShadow='0 6px 25px rgba(37,211,102,0.6)'"
+   onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 4px 20px rgba(37,211,102,0.4)'">
+    <i class="fab fa-whatsapp" style="color: white; font-size: 2rem;"></i>
+</a>
+
+</body>
+</body>
+</html>

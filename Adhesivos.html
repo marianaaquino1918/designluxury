@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Categoría Adhesivos | DESIGN LUXURY</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@300;400;500;700&display=swap');
+
+        :root {
+            /* Paleta de Colores Lujo */
+            --bg-color: #faf9f7;
+            --primary-luxury: #a98d40; /* Dorado/Latón para acentos */
+            --primary-hover: #886f3f;
+            --text-dark: #2a2a2a;
+            --text-light: #faf9f7;
+            --card-bg: #fff;
+            --shadow-subtle: 0 4px 20px rgba(0,0,0,0.07);
+            --shadow-deep: 0 10px 40px rgba(0,0,0,0.15);
+            --overlay-bg: rgba(255, 255, 255, 0.95);
+            --transition-speed: 0.4s;
+            --border-radius: 12px;
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Roboto', sans-serif;
+        }
+
+        /* BASE Y ESTILO GENERAL */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            scroll-behavior: smooth;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* --- HEADER Y NAVEGACIÓN --- */
+        header {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            background: var(--overlay-bg);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-subtle);
+            z-index: 1000;
+            padding: 1rem 4%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        header h1 {
+            font-family: var(--font-serif);
+            font-weight: 700;
+            font-size: 2rem;
+            color: var(--primary-hover);
+            letter-spacing: 3px;
+            cursor: pointer;
+        }
+
+        /* Menú de escritorio */
+        .main-nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .main-nav ul li a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            font-size: 1.05rem;
+            padding: 0.5rem 0;
+            position: relative;
+            transition: color var(--transition-speed);
+        }
+
+        .main-nav ul li a::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: -5px;
+            width: 0;
+            height: 2px;
+            background: var(--primary-luxury);
+            transition: width var(--transition-speed);
+        }
+
+        .main-nav ul li a:hover,
+        .main-nav ul li a:focus {
+            color: var(--primary-luxury);
+            outline: none;
+        }
+
+        .main-nav ul li a:hover::after,
+        .main-nav ul li a.active::after {
+            width: 100%;
+        }
+
+        .main-nav ul li a.active {
+            color: var(--primary-luxury);
+            font-weight: 700;
+        }
+
+        /* BOTÓN HAMBURGUESA (SÓLO MÓVIL) */
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--primary-luxury);
+            padding: 0.5rem;
+            z-index: 1001;
+            border: none;
+            background: none;
+            transition: transform 0.3s;
+        }
+
+        /* --- MENÚ LATERAL (OFF-CANVAS) --- */
+        .off-canvas-menu {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 300px;
+            max-width: 80%;
+            height: 100%;
+            background: var(--overlay-bg);
+            backdrop-filter: blur(15px);
+            box-shadow: -10px 0 30px rgba(0,0,0,0.3);
+            z-index: 999;
+            transform: translateX(100%);
+            transition: transform 0.5s ease-in-out;
+            padding-top: 5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .off-canvas-menu.open {
+            transform: translateX(0);
+        }
+
+        .off-canvas-menu ul {
+            list-style: none;
+            width: 100%;
+            text-align: center;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .off-canvas-menu ul li a {
+            text-decoration: none;
+            font-family: var(--font-serif);
+            font-size: 1.4rem; /* TAMAÑO MEDIANO Y ELEGANTE */
+            font-weight: 700;
+            color: var(--text-dark);
+            display: block;
+            padding: 0.8rem 0;
+            transition: color 0.3s, background 0.3s, transform 0.3s, box-shadow 0.3s; /* Transiciones para animación */
+            position: relative; /* Necesario para la sombra */
+        }
+
+        .off-canvas-menu ul li a:hover,
+        .off-canvas-menu ul li a.active {
+            color: var(--primary-luxury);
+            background: rgba(169,141,64,0.1); /* Fondo sutil */
+            transform: translateY(-3px); /* Efecto de elevación */
+            box-shadow: 0 5px 15px rgba(169,141,64,0.3); /* Sombra brillante */
+            text-shadow: 0 0 8px rgba(169,141,64,0.6); /* Resplandor en el texto */
+        }
+
+        .off-canvas-menu-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 998;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s;
+        }
+
+        .off-canvas-menu-overlay.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* --- HERO --- */
+        .hero {
+    height: 450px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: var(--text-light);
+    overflow: hidden;
+    background-color: #1a1a1a;
+}
+
+#hero-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(39,29,20,0.5) 0%, rgba(39,29,20,0.3) 100%);
+    z-index: 1;
+}
+
+.hero h2 {
+    position: relative;
+    font-family: var(--font-serif);
+    font-size: 4rem;
+    max-width: 900px;
+    z-index: 2;
+    text-shadow: 0 8px 20px rgba(0,0,0,0.9);
+}
+
+        /* --- SECCIÓN DE PRODUCTOS --- */
+        .products-section {
+            max-width: 1380px;
+            margin: 5rem auto 8rem auto;
+            padding: 0 4%;
+        }
+
+        .products-section h3 {
+            font-family: var(--font-serif);
+            font-size: 3.2rem;
+            text-align: center;
+            margin-bottom: 4rem;
+            color: var(--primary-hover);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Contenedor de cada categoría para forzar el flujo correcto */
+        .products-category {
+            margin-bottom: 3rem;
+        }
+
+        /* Estilos de las categorías (h4 personalizados) */
+        .category-title {
+            font-family: 'Georgia', serif;
+            font-size: 2.2rem;
+            color: #6B4C3B;
+            font-weight: 700;
+            margin-top: 4rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--primary-luxury);
+            padding-bottom: 0.5rem;
+            display: block;
+            width: 100%;
+            text-align: left;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3.5rem;
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-subtle);
+            overflow: hidden;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+            color: var(--text-dark);
+        }
+
+        .product-card:hover,
+        .product-card:focus-within {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            outline: none;
+        }
+
+        /* CORRECCIÓN DE IMAGEN FINAL: Se asegura que se vea completa en la tarjeta */
+        .product-card img {
+            width: 100%;
+            height: 250px; /* Altura fija para el contenedor de la imagen */
+            object-fit: contain; /* CLAVE: Mantiene la relación de aspecto y se asegura que la imagen completa sea visible */
+            display: block;
+            transition: transform 0.6s ease;
+            border-top-left-radius: var(--border-radius);
+            border-top-right-radius: var(--border-radius);
+            background-color: #f0f0f0; /* Fondo sutil para el espacio si la imagen no llena todo */
+            padding: 10px; /* Un poco de padding para que la imagen no toque los bordes */
+        }
+
+        .product-card:hover img {
+            transform: scale(1.02); /* Escala un poco menos para evitar el recorte al hacer zoom */
+        }
+
+        .product-info {
+            padding: 2rem 1.8rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .product-info h4 {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            margin-bottom: 0.8rem;
+            letter-spacing: 0.5px;
+            color: var(--primary-hover);
+        }
+
+        .product-info p {
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #5f4b3b;
+            flex-grow: 1;
+            opacity: 0.8;
+        }
+
+        .product-info button {
+            margin-top: 2rem;
+            background: var(--primary-luxury);
+            color: var(--text-light);
+            border: none;
+            padding: 0.8rem 2rem;
+            font-weight: 700;
+            font-size: 1rem;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(169,141,64,0.4);
+            transition: background var(--transition-speed), box-shadow var(--transition-speed), transform 0.2s;
+            align-self: center;
+        }
+
+        .product-info button:hover,
+        .product-info button:focus {
+            background: var(--primary-hover);
+            box-shadow: 0 10px 25px rgba(136,111,63,0.7);
+            transform: translateY(-2px);
+            outline: none;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background: var(--primary-hover);
+            color: var(--text-light);
+            text-align: center;
+            padding: 3rem 1rem;
+            font-size: 1rem;
+        }
+
+        footer small {
+            opacity: 0.9;
+        }
+
+        /* ICONOS SOCIALES */
+        footer .socials {
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            font-size: 1.6rem;
+        }
+
+        footer .socials a {
+            color: var(--text-light);
+            transition: color var(--transition-speed), transform 0.3s;
+        }
+
+        footer .socials a:hover,
+        footer .socials a:focus {
+            color: var(--primary-luxury);
+            transform: scale(1.2);
+            outline: none;
+        }
+
+        /* --- RESPONSIVIDAD --- */
+        @media (max-width: 900px) {
+            .main-nav {
+                display: none;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            header {
+                justify-content: space-between;
+                padding: 1rem 4%;
+            }
+
+            header h1 {
+                font-size: 1.5rem;
+            }
+
+            .products-section {
+                padding: 0 5%;
+                margin: 4rem auto 6rem auto;
+            }
+
+            .hero h2 {
+                font-size: 3rem;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 2rem;
+            }
+
+            .product-card img {
+                height: 180px; /* Ajuste para móviles */
+                padding: 5px; /* Menos padding en móvil */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h2 {
+                font-size: 2.2rem;
+            }
+
+            .products-section h3 {
+                font-size: 1.8rem;
+                margin-bottom: 2rem;
+            }
+
+            .category-title {
+                font-size: 1.5rem;
+                margin-top: 2rem;
+            }
+
+            .product-card {
+                margin: 0 auto;
+                max-width: 350px;
+            }
+
+            .product-info h4 {
+                font-size: 1.2rem;
+            }
+
+            .product-info p {
+                font-size: 0.9rem;
+            }
+
+            .product-info button {
+                font-size: 0.9rem;
+                padding: 0.6rem 1.4rem;
+            }
+
+            /* Ajuste del menú off-canvas para pantallas aún más pequeñas */
+            .off-canvas-menu ul li a {
+                font-size: 1.2rem; /* Tamaño de fuente ligeramente más pequeño para móviles muy pequeños */
+                padding: 0.7rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>DESIGN LUXURY</h1>
+
+        <nav aria-label="Menú principal" class="main-nav">
+            <ul>
+               <li><a href="Index.html">Inicio</a></li> 
+                   <li><a href="Sinteticos.html">Sintético</a></li>
+                       <li><a href="Piedrass.html">Piedras</a></li>
+                <li><a href="Aguaa.html">Agua</a></li>
+                <li><a href="Pisoss.html">Pisos Gran Formato</a></li>
+                 <li><a href="Adhesivos.html" class="active" aria-current="page">Adhesivos</a></li>
+                <li><a href="mesas.html">Mesas</a></li>
+                <li><a href="servicios.html">Servicios</a></li>
+             
+            </ul>
+        </nav>
+
+        <button class="menu-toggle" aria-expanded="false" aria-controls="off-canvas-menu">
+            <i class="fas fa-bars"></i>
+        </button>
+    </header>
+
+    <div id="off-canvas-menu" class="off-canvas-menu">
+        <ul>
+                   <li><a href="Index.html">Inicio</a></li> 
+                   <li><a href="Sinteticos.html">Sintético</a></li>
+                       <li><a href="Piedrass.html">Piedras</a></li>
+                <li><a href="Aguaa.html">Agua</a></li>
+                <li><a href="Pisoss.html">Pisos Gran Formato</a></li>
+                 <li><a href="Adhesivos.html" class="active" aria-current="page">Adhesivos</a></li>
+                <li><a href="mesas.html">Mesas</a></li>
+                <li><a href="servicios.html">Servicios</a></li>
+        </ul>
+    </div>
+    <div class="off-canvas-menu-overlay"></div>
+
+ <section class="hero" role="banner">
+    <video autoplay loop muted playsinline id="hero-video">
+        <source src="CEMIX.mp4" type="video/mp4">
+    </video>
+    <h2>ADHESIVOS</h2>
+</section>
+    <main class="products-section">
+        <h3>Productos destacados en Adhesivos</h3>
+
+        <div class="products-category">
+            <h4 class="category-title">Adhesivos Cremosos</h4>
+            <div class="products-grid">
+                <article class="product-card" tabindex="0" role="group" aria-label="AMU Pegamento Multiusos, presentación 20 kg, color blanco">
+                    <img src="amut.jpg" alt="Pegamento Multiusos" />
+                    <div class="product-info">
+                        <h4>AMU PEGAMENTO MULTIUSOS</h4>
+                        <p>Presentación: 20 kg <br>
+                        Color: Blanco
+                        </p>
+                        <a href="https://wa.me/528124203903" target="_blank" aria-label="Solicitar información sobre AMU Pegamento Multiusos" style="display:inline-block; text-decoration:none;">
+    <button aria-label="Solicitar información sobre AMU Pegamento Multiusos">Solicitar Información</button>
+</a>
+                    </div>
+                </article>
+
+                <article class="product-card" tabindex="0" role="group" aria-label="PSP CEMIX Pega Porcelanato, presentación 20 kg, color blanco y gris">
+                    <img src="pspgris.jpg" alt="Pega Porcelanato" />
+                    <div class="product-info">
+                        <h4>PSP CEMIX PEGA PORCELANATO </h4>
+                        <p>Presentación: 20 kg <br>
+                        Color: Blanco y Gris</p>
+                        <a href="https://wa.me/528124203903" target="_blank" aria-label="Solicitar información sobre AMU Pegamento Multiusos" style="display:inline-block; text-decoration:none;">
+    <button aria-label="Solicitar información sobre AMU Pegamento Multiusos">Solicitar Información</button>
+</a>
+                    </div>
+                </article>
+            </div>
+        </div>
+
+        <div class="products-category">
+            <h4 class="category-title">Adhesivos de alto desempeño</h4>
+            <div class="products-grid">
+                <article class="product-card" tabindex="0" role="group" aria-label="360 SMARTFLEX Adhesivo Cemix, presentación 20 kg, color blanco">
+                    <img src="360.Smart.jpg" alt="360 SMARTFLEX" />
+                    <div class="product-info">
+                        <h4>360 SMARTFLEX ADHESIVO CEMIX</h4>
+                        <p>Presentación: 20 kg <br>
+                        Color: Blanco
+                        </p>
+                        <a href="https://wa.me/528124203903" target="_blank" aria-label="Solicitar información sobre AMU Pegamento Multiusos" style="display:inline-block; text-decoration:none;">
+    <button aria-label="Solicitar información sobre AMU Pegamento Multiusos">Solicitar Información</button>
+</a>
+                    </div>
+                </article>
+
+                <article class="product-card" tabindex="0" role="group" aria-label="ADHESIVO FORMATO GRANDE, presentación 20 kg, color blanco">
+                    <img src="formatogrande.jpg" alt="Adhesivo Formato Grande" />
+                    <div class="product-info">
+                        <h4>ADHESIVO FORMATO GRANDE</h4>
+                        <p>Presentación: 20 kg <br>
+                        Color: Blanco</p>
+                        <a href="https://wa.me/528124203903" target="_blank" aria-label="Solicitar información sobre AMU Pegamento Multiusos" style="display:inline-block; text-decoration:none;">
+    <button aria-label="Solicitar información sobre AMU Pegamento Multiusos">Solicitar Información</button>
+</a>
+                    </div>
+                </article>
+
+                <article class="product-card" tabindex="0" role="group" aria-label="GRAN FORMATO CEMIX, presentación 20 kg, color blanco">
+                    <img src="granformato.jpg" alt="GRAN FORMATO CEMIX" />
+                    <div class="product-info">
+                        <h4>GRAN FORMATO CEMIX</h4>
+                        <p>Presentación: 20 kg <br>
+                        Color: Blanco
+                        </p>
+                        <a href="https://wa.me/528124203903" target="_blank" aria-label="Solicitar información sobre AMU Pegamento Multiusos" style="display:inline-block; text-decoration:none;">
+    <button aria-label="Solicitar información sobre AMU Pegamento Multiusos">Solicitar Información</button>
+</a>
+                    </div>
+                </article>
+            </div>
+        </div>
+
+        <div class="products-category">
+            <h4 class="category-title">Adhesivos modificados</h4>
+            <div class="products-grid">
+                <article class="product-card" tabindex="0" role="group" aria-label="ADHESIVO PORCELANATO GRIS, presentación 20 kg, color gris">
+                    <img src="modificado.jpg" alt="Adhesivo Porcelanato Gris" />
+                    <div class="product-info">
+                        <h4>ADHESIVO PORCELANATO GRIS</h4>
+                        <p>Presentación: 20 kg <br>
+                        Color: Gris</p>
+                       <a href="https://wa.me/528124203903" target="_blank" aria-label="Solicitar información sobre AMU Pegamento Multiusos" style="display:inline-block; text-decoration:none;">
+    <button aria-label="Solicitar información sobre AMU Pegamento Multiusos">Solicitar Información</button>
+</a>
+                    </div>
+                </article>
+                <article class="product-card" tabindex="0" role="group" aria-label="ADHESIVO UNIVERSAL PEGAZULEJO CEMIX, presentación 20 kg, color blanco">
+                    <img src="universal.jpg" alt="Adhesivo Universal Pegazulejo" />
+                    <div class="product-info">
+                        <h4>ADHESIVO UNIVERSAL PEGAZULEJO CEMIX</h4>
+                        <p>Presentación: 20 kg <br>
+                        Color: Blanco
+                        </p>
+                       <a href="https://wa.me/528124203903" target="_blank" aria-label="Solicitar información sobre AMU Pegamento Multiusos" style="display:inline-block; text-decoration:none;">
+    <button aria-label="Solicitar información sobre AMU Pegamento Multiusos">Solicitar Información</button>
+</a>
+                    </div>
+                </article>
+            </div>
+        </div>
+
+        <div class="products-category">
+            <h4 class="category-title">Adhesivos especiales</h4>
+            <div class="products-grid">
+                <article class="product-card" tabindex="0" role="group" aria-label="TEXRITE EPOXYPLUS TS, presentación 3.78 L, color arena">
+                    <img src="especial.jpg" alt="TEXRITE EPOXYPLUS TS" />
+                    <div class="product-info">
+                        <h4>TEXRITE EPOXYPLUS TS</h4>
+                        <p>Presentación: 3.78 L <br>
+                        Color: Arena</p>
+                      <a href="https://wa.me/528124203903" target="_blank" aria-label="Solicitar información sobre AMU Pegamento Multiusos" style="display:inline-block; text-decoration:none;">
+    <button aria-label="Solicitar información sobre AMU Pegamento Multiusos">Solicitar Información</button>
+</a>
+                    </div>
+                </article>
+            </div>
+        </div>
+
+        <div class="products-category">
+            <h4 class="category-title">Recubrimientos capa gruesa y capa media</h4>
+            <div class="products-grid">
+                <article class="product-card" tabindex="0" role="group" aria-label="CEMIX APLANADO, presentación 25 y 40 kg, color blanco">
+                    <img src="aplanado.jpg" alt="CEMIX APLANADO" />
+                    <div class="product-info">
+                        <h4>CEMIX APLANADO</h4>
+                        <p>Presentación: 25 y 40 kg <br>
+                        Color: Blanco
+                        </p>
+                       <a href="https://wa.me/528124203903" target="_blank" aria-label="Solicitar información sobre AMU Pegamento Multiusos" style="display:inline-block; text-decoration:none;">
+    <button aria-label="Solicitar información sobre AMU Pegamento Multiusos">Solicitar Información</button>
+</a>
+                    </div>
+                </article>
+
+                <article class="product-card" tabindex="0" role="group" aria-label="ADEBLOK, presentación 25 y 40 kg, color blanco">
+                    <img src="abeblock.jpg" alt="ADEBLOK" />
+                    <div class="product-info">
+                        <h4>ADEBLOK</h4>
+                        <p>Presentación: 25 y 40 kg <BR>
+                        Color: Blanco
+                        </p>
+                       <a href="https://wa.me/528124203903" target="_blank" aria-label="Solicitar información sobre AMU Pegamento Multiusos" style="display:inline-block; text-decoration:none;">
+    <button aria-label="Solicitar información sobre AMU Pegamento Multiusos">Solicitar Información</button>
+</a>
+                    </div>
+                </article>
+
+                <article class="product-card" tabindex="0" role="group" aria-label="ADEBLOK CONSTRUCTOR, presentación 25 y 40 kg, color gris y blanco">
+                    <img src="constructor.jpg" alt="ADEBLOK CONSTRUCTOR" />
+                    <div class="product-info">
+                        <h4>ADEBLOK CONSTRUCTOR</h4>
+                        <p>Presentación: 25 y 40 kg <br>
+                        Color: Gris y Blanco
+                        </p>
+                        <a href="https://wa.me/528124203903" target="_blank" aria-label="Solicitar información sobre AMU Pegamento Multiusos" style="display:inline-block; text-decoration:none;">
+    <button aria-label="Solicitar información sobre AMU Pegamento Multiusos">Solicitar Información</button>
+</a>
+                    </div>
+                </article>
+            </div>
+        </div>
+
+        <div class="products-category">
+            <h4 class="category-title">Acabados arquitectónicos y texturas</h4>
+            <div class="products-grid">
+                <article class="product-card" tabindex="0" role="group" aria-label="CHUKUM CEMIX, presentación 20 kg, color chukum">
+                    <img src="chukumix.jpg" alt="CHUKUM CEMIX" />
+                    <div class="product-info">
+                        <h4>CHUKUM CEMIX</h4>
+                        <p>Presentación: 20 kg <br>
+                        Color: Chukum
+                        </p>
+                     <a href="https://wa.me/528124203903" target="_blank" aria-label="Solicitar información sobre AMU Pegamento Multiusos" style="display:inline-block; text-decoration:none;">
+    <button aria-label="Solicitar información sobre AMU Pegamento Multiusos">Solicitar Información</button>
+</a>
+                    </div>
+                </article>
+
+                <article class="product-card" tabindex="0" role="group" aria-label="CONCRETO PULIDO, presentación 20 kg, color gris">
+                    <img src="deconcreto.jpg" alt="Concreto Pulido" />
+                    <div class="product-info">
+                        <h4>CONCRETO PULIDO</h4>
+                        <p>Presentación: 20 kg <br>
+                        Color: Gris</p>
+                     <a href="https://wa.me/528124203903" target="_blank" aria-label="Solicitar información sobre AMU Pegamento Multiusos" style="display:inline-block; text-decoration:none;">
+    <button aria-label="Solicitar información sobre AMU Pegamento Multiusos">Solicitar Información</button>
+</a>
+                    </div>
+                </article>
+            </div>
+        </div>
+
+        <div class="products-category">
+            <h4 class="category-title">Morteros y preparación de superficies</h4>
+            <div class="products-grid">
+                <article class="product-card" tabindex="0" role="group" aria-label="MORTERO AUTONIVELANTE, presentación 20 kg, color gris">
+                    <img src="autonivelante.jpg" alt="Mortero Autonivelante" />
+                    <div class="product-info">
+                        <h4>MORTERO AUTONIVELANTE</h4>
+                        <p> Presentación: 20 kg <br>
+                        Color: Gris</p>
+                       <a href="https://wa.me/528124203903" target="_blank" aria-label="Solicitar información sobre AMU Pegamento Multiusos" style="display:inline-block; text-decoration:none;">
+    <button aria-label="Solicitar información sobre AMU Pegamento Multiusos">Solicitar Información</button>
+</a>
+                    </div>
+                </article>
+
+                <article class="product-card" tabindex="0" role="group" aria-label="MORTERO CONSTRUCCIÓN NIVELADOR, presentación 25 kg, color gris">
+                    <img src="mornivelador.jpg" alt="Mortero Nivelador" />
+                    <div class="product-info">
+                        <h4>MORTERO CONSTRUCCIÓN NIVELADOR</h4>
+                        <p>Presentación: 25 kg <br>
+                        Color: Gris</p>
+                      <a href="https://wa.me/528124203903" target="_blank" aria-label="Solicitar información sobre AMU Pegamento Multiusos" style="display:inline-block; text-decoration:none;">
+    <button aria-label="Solicitar información sobre AMU Pegamento Multiusos">Solicitar Información</button>
+</a>
+                    </div>
+                </article>
+
+                <article class="product-card" tabindex="0" role="group" aria-label="MORTERO DE ANCLAJE, presentación 2 kg, color gris">
+                    <img src="morancla.jpg" alt="Mortero de Anclaje" />
+                    <div class="product-info">
+                        <h4>MORTERO DE ANCLAJE</h4>
+                        <p> Presentación: 2 kg <br>
+                        Color: Gris</p>
+                       <a href="https://wa.me/528124203903" target="_blank" aria-label="Solicitar información sobre AMU Pegamento Multiusos" style="display:inline-block; text-decoration:none;">
+    <button aria-label="Solicitar información sobre AMU Pegamento Multiusos">Solicitar Información</button>
+</a>
+                    </div>
+                </article>
+
+                <article class="product-card" tabindex="0" role="group" aria-label="MORTERO SECO CEMIX, presentación 40 kg, color gris">
+                    <img src="morseco.jpg" alt="Mortero Seco" />
+                    <div class="product-info">
+                        <h4>MORTERO SECO CEMIX</h4>
+                        <p>
+                        Presentación: 40 kg <br>
+                        Color: Gris
+                        </p>
+                       <a href="https://wa.me/528124203903" target="_blank" aria-label="Solicitar información sobre AMU Pegamento Multiusos" style="display:inline-block; text-decoration:none;">
+    <button aria-label="Solicitar información sobre AMU Pegamento Multiusos">Solicitar Información</button>
+</a>
+                    </div>
+                </article>
+            </div>
+        </div>
+
+        <div class="products-category">
+            <h4 class="category-title">Impermeabilizantes acrílicos</h4>
+            <div class="products-grid">
+                <article class="product-card" tabindex="0" role="group" aria-label="IMPERCOOL CEMIX TOTAL, presentación 19 L, color blanco">
+                    <img src="impercool.jpg" alt="IMPERCOOL TOTAL" />
+                    <div class="product-info">
+                        <h4>IMPERCOOL CEMIX TOTAL</h4>
+                        <p>
+                        Presentación: 19 L <br>
+                        Color: Blanco
+                        </p>
+                     <a href="https://wa.me/528124203903" target="_blank" aria-label="Solicitar información sobre AMU Pegamento Multiusos" style="display:inline-block; text-decoration:none;">
+    <button aria-label="Solicitar información sobre AMU Pegamento Multiusos">Solicitar Información</button>
+</a>
+                    </div>
+                </article>
+                <article class="product-card" tabindex="0" role="group" aria-label="IMPERCOOL CEMIX 5 AÑOS FIBRATADO, presentación 19 L y 3.78 L, color blanco y terracota">
+                    <img src="impercool5.jpg" alt="IMPERCOOL 5 AÑOS" />
+                    <div class="product-info">
+                        <h4>IMPERCOOL CEMIX 5 AÑOS FIBRATADO</h4>
+                        <p>
+                        Presentación: 19 L y 3.78 L <br>
+                        Color: Blanco y Terracota
+                        </p>
+                       <a href="https://wa.me/528124203903" target="_blank" aria-label="Solicitar información sobre AMU Pegamento Multiusos" style="display:inline-block; text-decoration:none;">
+    <button aria-label="Solicitar información sobre AMU Pegamento Multiusos">Solicitar Información</button>
+</a>
+                    </div>
+                </article>
+                <article class="product-card" tabindex="0" role="group" aria-label="SELLADOR ACRÍLICO, presentación 19 L, 3.78 L y 1 L, color azul">
+                    <img src="selladoracri.jpg" alt="SELLADOR ACRÍLICO" />
+                    <div class="product-info">
+                        <h4>SELLADOR ACRÍLICO</h4>
+                        <p>
+                        Presentación: 19 L, 3.78 L y 1 L <br>
+                        Color: Azul
+                        </p>
+                      <a href="https://wa.me/528124203903" target="_blank" aria-label="Solicitar información sobre AMU Pegamento Multiusos" style="display:inline-block; text-decoration:none;">
+    <button aria-label="Solicitar información sobre AMU Pegamento Multiusos">Solicitar Información</button>
+</a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <small>© 2025 DESIGN LUXURY. Todos los derechos reservados.</small>
+        <div class="socials" aria-label="Redes sociales">
+            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+        </div>
+    </footer>
+
+    <script>
+        // Lógica del Menú Hamburguesa
+        const menuToggle = document.querySelector('.menu-toggle');
+        const offCanvasMenu = document.getElementById('off-canvas-menu');
+        const menuOverlay = document.querySelector('.off-canvas-menu-overlay');
+
+        function toggleMenu() {
+            const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true' || false;
+            menuToggle.setAttribute('aria-expanded', !isExpanded);
+            offCanvasMenu.classList.toggle('open');
+            menuOverlay.classList.toggle('visible');
+            // Previene el scroll del cuerpo cuando el menú está abierto
+            document.body.style.overflow = offCanvasMenu.classList.contains('open') ? 'hidden' : 'auto';
+        }
+
+        menuToggle.addEventListener('click', toggleMenu);
+        menuOverlay.addEventListener('click', toggleMenu);
+
+        // Cerrar el menú al hacer clic en un enlace
+        offCanvasMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (offCanvasMenu.classList.contains('open')) {
+                    toggleMenu();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
